@@ -182,7 +182,7 @@ import type {
 } from './types/tools';
 
 /** The version of this package. */
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 
 /** The address calls are sent to: a URL with its scheme. */
 export type BaseURL = `${string}://${string}/api/v1` | (string & {});
@@ -279,7 +279,7 @@ export type BehaviorOptions = {
 export type ClientCredentials = {
   /**
    * An instance admin key from `ADMIN_API_KEYS`, or an organization key
-   * (`elmo_…`) issued from the dashboard.
+   * (`elmo_…`) issued from the dashboard. Its value starts with `elmo_`.
    *
    * Read from the `ELMO_API_KEY` environment variable when unset.
    */

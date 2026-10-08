@@ -51,7 +51,7 @@ aube add @elmohq/sdk
 
 ## Usage
 
-Set `ELMO_API_KEY` in your environment, then call the API:
+Set [`ELMO_API_KEY`](https://elmohq.com/docs/api#authentication) in your environment, then call the API:
 
 ```ts
 import { Elmo } from '@elmohq/sdk';
@@ -147,10 +147,10 @@ The client reads `ELMO_API_KEY` from the environment. To pass the value yourself
 ```ts
 import { Elmo } from '@elmohq/sdk';
 
-const elmo = new Elmo({ apiKey: '…' });
+const elmo = new Elmo({ apiKey: 'elmo_…' });
 ```
 
-`apiKey` also takes a function that returns the value, such as one that reads it from a secret store. The client calls it for each request.
+Get `apiKey` from [the page that issues it](https://elmohq.com/docs/api#authentication). `apiKey` also takes a function that returns the value, such as one that reads it from a secret store. The client calls it for each request.
 
 ### Browser usage
 

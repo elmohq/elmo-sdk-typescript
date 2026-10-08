@@ -8,7 +8,7 @@ it('logs nothing unless asked to', async () => {
   const log = recorder();
   const api = standIn([success]);
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     logger: log.logger,
     fetch: api.fetch,
   });
@@ -20,12 +20,12 @@ it('never logs the credential', async () => {
   const log = recorder();
   const api = standIn([success]);
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     logLevel: 'debug',
     logger: log.logger,
     fetch: api.fetch,
   });
   await client.me.get();
   expect(log.lines).not.toEqual([]);
-  expect(log.lines.join('\n')).not.toContain('test');
+  expect(log.lines.join('\n')).not.toContain('elmo_test');
 });

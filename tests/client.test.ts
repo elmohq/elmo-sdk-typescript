@@ -4,13 +4,13 @@ import { expect, it, vi } from 'vitest';
 import { standIn, success, unanswered } from './stand-in';
 
 it('builds the client', () => {
-  expect(new Elmo({ apiKey: 'test' })).toBeInstanceOf(Elmo);
+  expect(new Elmo({ apiKey: 'elmo_test' })).toBeInstanceOf(Elmo);
 });
 
 it('sends calls to the base URL it was given', async () => {
   const api = standIn([success]);
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     baseURL: 'https://api.test/v1',
     fetch: api.fetch,
   });
@@ -21,7 +21,7 @@ it('sends calls to the base URL it was given', async () => {
 it('sends the headers it was given with every call', async () => {
   const api = standIn([success]);
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     defaultHeaders: { 'x-test': 'test' },
     fetch: api.fetch,
   });
@@ -31,14 +31,14 @@ it('sends the headers it was given with every call', async () => {
 
 it('sends no content type with a call that has no body', async () => {
   const api = standIn([success]);
-  const client = new Elmo({ apiKey: 'test', fetch: api.fetch });
+  const client = new Elmo({ apiKey: 'elmo_test', fetch: api.fetch });
   await client.me.get();
   expect(api.requests[0].headers.has('content-type')).toBe(false);
 });
 
 it('throws an abort, not a timeout, when the caller calls it off', async () => {
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     fetch: unanswered,
     retry: false,
   });
@@ -54,7 +54,7 @@ it('throws an abort when the caller calls it off as the reply arrives', async ()
   const api = standIn([success]);
   const controller = new AbortController();
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     fetch: (input: string, init: RequestInit) => {
       controller.abort();
       return api.fetch(input, init);
@@ -71,24 +71,24 @@ it('refuses to be built in a browser', async () => {
   vi.stubGlobal('window', {});
   vi.stubGlobal('document', {});
   expect(() => {
-    new Elmo({ apiKey: 'test' });
+    new Elmo({ apiKey: 'elmo_test' });
   }).toThrow(ElmoError);
   expect(() => {
-    new Elmo({ apiKey: 'test', dangerouslyAllowBrowser: true });
+    new Elmo({ apiKey: 'elmo_test', dangerouslyAllowBrowser: true });
   }).not.toThrow();
 });
 
 it('sends the credential in the authorization header', async () => {
   const api = standIn([success]);
-  const client = new Elmo({ apiKey: 'test', fetch: api.fetch });
+  const client = new Elmo({ apiKey: 'elmo_test', fetch: api.fetch });
   await client.me.get();
-  expect(api.requests[0].headers.get('authorization')).toContain('test');
+  expect(api.requests[0].headers.get('authorization')).toContain('elmo_test');
 });
 
 it('reads the credential from ELMO_API_KEY', async () => {
-  vi.stubEnv('ELMO_API_KEY', 'test');
+  vi.stubEnv('ELMO_API_KEY', 'elmo_test');
   const api = standIn([success]);
   const client = new Elmo({ fetch: api.fetch });
   await client.me.get();
-  expect(api.requests[0].headers.get('authorization')).toContain('test');
+  expect(api.requests[0].headers.get('authorization')).toContain('elmo_test');
 });
