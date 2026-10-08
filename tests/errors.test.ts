@@ -16,7 +16,7 @@ it.each([
 ])('throws the class named for the status %i', async (status, error) => {
   const api = standIn([{ status }]);
   const client = new Elmo({
-    apiKey: 'test',
+    apiKey: 'elmo_test',
     retry: false,
     fetch: api.fetch,
   });

@@ -1,7 +1,7 @@
 import { Elmo } from '@elmohq/sdk';
 import { expectTypeOf, it } from 'vitest';
 
-const client = new Elmo({ apiKey: 'test' });
+const client = new Elmo({ apiKey: 'elmo_test' });
 
 it('returns the reply each call declares', async () => {
   expectTypeOf(await client.me.get()).toEqualTypeOf<Elmo.APIKeyIdentity>();
