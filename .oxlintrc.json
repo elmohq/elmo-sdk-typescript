@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    // A call returns a `Promise` subclass that overrides `then`, which the rule reads as an object
+    // made thenable by accident.
+    "unicorn/no-thenable": "off"
+  }
+}

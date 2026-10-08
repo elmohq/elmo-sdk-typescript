@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "typescript": {
+      "package": {
+        "destination": [
+          "npm"
+        ]
+      }
+    }
+  }
+}
