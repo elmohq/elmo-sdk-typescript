@@ -3,10 +3,11 @@ import type { RequestOptions } from './shared/request-options';
 import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type { APIKeyIdentity, GetMeErrors, GetMeResponses } from '../types/identity';
 
-function reviveApiKeyIdentity(value: APIKeyIdentity): void {
+function reviveApiKeyIdentity(value: Mutable<APIKeyIdentity>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('ApiKeyIdentity.createdAt', value.createdAt, (raw) => new Date(raw));
   }

@@ -4,6 +4,7 @@ import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import { PagePromise, pages } from '../internal/page/page';
 import type {
@@ -20,13 +21,13 @@ import type {
 
 export const listPromptRunsFields = { path: ['promptId'] };
 
-function reviveRunSummary(value: RunSummary): void {
+function reviveRunSummary(value: Mutable<RunSummary>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('RunSummary.createdAt', value.createdAt, (raw) => new Date(raw));
   }
 }
 
-function reviveRunList(value: RunList): void {
+function reviveRunList(value: Mutable<RunList>): void {
   if (value.data != null) {
     value.data.forEach((item) => {
       reviveRunSummary(item);
@@ -53,7 +54,7 @@ export const listPromptRunsDescriptor = /* @__PURE__ */ callable({
 
 export const getRunFields = { path: ['promptId', 'runId'] };
 
-function reviveRun(value: Run): void {
+function reviveRun(value: Mutable<Run>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('Run.createdAt', value.createdAt, (raw) => new Date(raw));
   }

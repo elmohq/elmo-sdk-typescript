@@ -30,7 +30,7 @@ jobs:
         run: npm install --global npm@11.19.0
 
       - name: Build the package
-        run: npx --yes --registry https://npm.pkg.heyapi.dev/ hey-api@0.1.0-elmo.1 publish --build
+        run: npx --yes --registry https://npm.pkg.heyapi.dev/ hey-api@0.1.0-elmo.3 publish --build
         env:
           npm_config_//npm.pkg.heyapi.dev/:_authToken: ${{ secrets.HEY_API_PKG_TOKEN }}
 
@@ -54,6 +54,6 @@ jobs:
         run: npm install
 
       - name: Publish to npm
-        run: npx --yes --registry https://npm.pkg.heyapi.dev/ hey-api@0.1.0-elmo.1 publish --destination npm
+        run: npx --yes --registry https://npm.pkg.heyapi.dev/ hey-api@0.1.0-elmo.3 publish --destination npm
         env:
           npm_config_//npm.pkg.heyapi.dev/:_authToken: ${{ secrets.HEY_API_PKG_TOKEN }}

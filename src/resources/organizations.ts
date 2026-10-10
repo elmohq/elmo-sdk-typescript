@@ -4,6 +4,7 @@ import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { groupParams, mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import { PagePromise, pages } from '../internal/page/page';
 import type {
@@ -23,13 +24,13 @@ import type {
 
 export const getOrganizationBillingFields = { path: ['organizationId'] };
 
-function reviveBillingPlan(value: BillingPlan): void {
+function reviveBillingPlan(value: Mutable<BillingPlan>): void {
   if (value.periodEnd != null) {
     value.periodEnd = decoded('BillingPlan.periodEnd', value.periodEnd, (raw) => new Date(raw));
   }
 }
 
-function reviveOrganizationBilling(value: OrganizationBilling): void {
+function reviveOrganizationBilling(value: Mutable<OrganizationBilling>): void {
   if (value.plan != null) {
     reviveBillingPlan(value.plan);
   }
@@ -43,13 +44,13 @@ export const getOrganizationBillingDescriptor = /* @__PURE__ */ callable({
   validators: { response: /* @__PURE__ */ reviving(reviveOrganizationBilling) },
 } as const);
 
-function reviveOrganization(value: Organization): void {
+function reviveOrganization(value: Mutable<Organization>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('Organization.createdAt', value.createdAt, (raw) => new Date(raw));
   }
 }
 
-function reviveOrganizationList(value: OrganizationList): void {
+function reviveOrganizationList(value: Mutable<OrganizationList>): void {
   if (value.data != null) {
     value.data.forEach((item) => {
       reviveOrganization(item);

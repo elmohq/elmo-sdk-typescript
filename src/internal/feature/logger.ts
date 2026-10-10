@@ -127,7 +127,7 @@ function callLog(id: string, request: PreparedRequest, at: number, sink: Logger)
       if (response?.redirected && at >= LEVELS.warn) {
         sink.warn(line(`was redirected to ${safeAddress(response.url)}`));
       }
-      if (at >= LEVELS.info) sink.info(line(`→ ${response?.status ?? '?'} in ${ms} ms`));
+      if (at >= LEVELS.info) sink.info(line(`-> ${response?.status ?? '?'} in ${ms} ms`));
       if (at >= LEVELS.debug) {
         sink.debug(`[${id}] received`, {
           headers: safeHeaders(Object.fromEntries(response?.headers ?? []), request.callable),
@@ -140,7 +140,7 @@ function callLog(id: string, request: PreparedRequest, at: number, sink: Logger)
       if (at < LEVELS.warn) return;
       const again = `retrying in ${Math.round(wait)} ms (${retry} of ${retries})`;
       if (after?.status !== undefined) {
-        sink.warn(line(`→ ${after.status}, ${again}`));
+        sink.warn(line(`-> ${after.status}, ${again}`));
       } else if (after?.error !== undefined) {
         sink.warn(line(`failed: ${failureText(after.error)}, ${again}`));
       } else {

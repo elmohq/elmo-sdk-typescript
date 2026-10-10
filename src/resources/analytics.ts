@@ -4,6 +4,7 @@ import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type {
   BrandAnalytics,
@@ -40,7 +41,7 @@ import type { BrandIdPath } from '../types/shared/brand-id-path';
 
 export const getBrandAnalyticsFields = { path: ['brandId'] };
 
-function reviveDateRange(value: DateRange): void {
+function reviveDateRange(value: Mutable<DateRange>): void {
   if (value.start != null) {
     value.start = decoded('DateRange.start', value.start, (raw) => new Date(raw));
   }
@@ -49,7 +50,7 @@ function reviveDateRange(value: DateRange): void {
   }
 }
 
-function reviveBrandAnalytics(value: BrandAnalytics): void {
+function reviveBrandAnalytics(value: Mutable<BrandAnalytics>): void {
   if (value.range != null) {
     reviveDateRange(value.range);
   }
@@ -65,7 +66,7 @@ export const getBrandAnalyticsDescriptor = /* @__PURE__ */ callable({
 
 export const listBrandCitationDomainsFields = { path: ['brandId'] };
 
-function reviveCitationDomainList(value: CitationDomainList): void {
+function reviveCitationDomainList(value: Mutable<CitationDomainList>): void {
   if (value.range != null) {
     reviveDateRange(value.range);
   }
@@ -81,7 +82,7 @@ export const listBrandCitationDomainsDescriptor = /* @__PURE__ */ callable({
 
 export const listBrandCitationUrlsFields = { path: ['brandId'] };
 
-function reviveCitationUrlList(value: CitationURLList): void {
+function reviveCitationUrlList(value: Mutable<CitationURLList>): void {
   if (value.range != null) {
     reviveDateRange(value.range);
   }
@@ -97,7 +98,7 @@ export const listBrandCitationURLsDescriptor = /* @__PURE__ */ callable({
 
 export const listBrandPromptPerformanceFields = { path: ['brandId'] };
 
-function revivePromptPerformance(value: PromptPerformanceSchema): void {
+function revivePromptPerformance(value: Mutable<PromptPerformanceSchema>): void {
   if (value.lastRunAt != null) {
     value.lastRunAt = decoded(
       'PromptPerformance.lastRunAt',
@@ -114,7 +115,7 @@ function revivePromptPerformance(value: PromptPerformanceSchema): void {
   }
 }
 
-function revivePromptPerformanceList(value: PromptPerformanceList): void {
+function revivePromptPerformanceList(value: Mutable<PromptPerformanceList>): void {
   if (value.range != null) {
     reviveDateRange(value.range);
   }
@@ -135,7 +136,7 @@ export const listBrandPromptPerformanceDescriptor = /* @__PURE__ */ callable({
 
 export const getBrandQueryFanoutFields = { path: ['brandId'] };
 
-function reviveBrandQueryFanout(value: BrandQueryFanout): void {
+function reviveBrandQueryFanout(value: Mutable<BrandQueryFanout>): void {
   if (value.range != null) {
     reviveDateRange(value.range);
   }
