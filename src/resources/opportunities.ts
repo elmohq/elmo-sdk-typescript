@@ -4,6 +4,7 @@ import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type {
   BrandOpportunities,
@@ -17,7 +18,7 @@ import type { BrandIdPath } from '../types/shared/brand-id-path';
 
 export const getBrandOpportunitiesFields = { path: ['brandId'] };
 
-function reviveBrandOpportunities(value: BrandOpportunities): void {
+function reviveBrandOpportunities(value: Mutable<BrandOpportunities>): void {
   if (value.generatedAt != null) {
     value.generatedAt = decoded(
       'BrandOpportunities.generatedAt',

@@ -5,6 +5,7 @@ import { nameRule } from './shared/rule';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { groupParams, mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import { PagePromise, pages } from '../internal/page/page';
 import type {
@@ -25,7 +26,7 @@ import type {
   UpdateCompetitorResponses,
 } from '../types/competitors';
 
-function reviveCompetitor(value: Competitor): void {
+function reviveCompetitor(value: Mutable<Competitor>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('Competitor.createdAt', value.createdAt, (raw) => new Date(raw));
   }
@@ -34,7 +35,7 @@ function reviveCompetitor(value: Competitor): void {
   }
 }
 
-function reviveCompetitorsList(value: CompetitorsList): void {
+function reviveCompetitorsList(value: Mutable<CompetitorsList>): void {
   if (value.data != null) {
     value.data.forEach((item) => {
       reviveCompetitor(item);

@@ -1,7 +1,7 @@
 import { backoffDelay, exceedsMaxRetryAfter, retryAfterDelay, sleep } from '../core/backoff';
 import { discardBody, isStreamed } from '../core/body';
 import { calledOffWith, classifyError, ElmoError, failureOf, TransportError } from '../core/errors';
-import type { Feature, PreparedRequest, Result, RetryRules } from '../core/types';
+import type { Feature, PreparedRequest, Result, RetryRules, Send } from '../core/types';
 
 /** Which failed calls are sent again, how many times, and how long each waits first. */
 export interface RetryOptions extends RetryRules {
@@ -115,51 +115,50 @@ function shouldRetryError(
 }
 
 export function retryFeature(options: RetryOptions = {}): Feature {
-  return {
-    name: 'retry',
-    async onSend(request, next) {
-      const config = isStreamed(request.body) ? undefined : resolveRetry(options, request);
-      if (!config) return next(request);
+  async function repeated(request: PreparedRequest, next: Send): Promise<Result> {
+    const config = isStreamed(request.body) ? undefined : resolveRetry(options, request);
+    if (!config) return next(request);
 
-      const attempts = (config.maxRetries ?? DEFAULT_MAX_RETRIES) + 1;
-      const repeatable = isRepeatable(config, request);
-      const started = Date.now();
+    const attempts = (config.maxRetries ?? DEFAULT_MAX_RETRIES) + 1;
+    const repeatable = isRepeatable(config, request);
+    const started = Date.now();
 
-      for (let attempt = 0; ; attempt++) {
-        const last = attempt >= attempts - 1;
-        let result: Result | undefined;
-        let threw = false;
-        let wait: number | undefined;
+    for (let attempt = 0; ; attempt++) {
+      const last = attempt >= attempts - 1;
+      let result: Result | undefined;
+      let threw = false;
+      let wait: number | undefined;
 
-        if (attempt) request.attempt = attempt;
-        try {
-          result = await next(request);
-          if (last || !shouldRetry(config, result, request, repeatable)) return result;
+      if (attempt) request.attempt = attempt;
+      try {
+        result = await next(request);
+        if (last || !shouldRetry(config, result, request, repeatable)) return result;
 
-          wait = config.retryDelay?.(result, request, attempt);
-          if (wait === undefined) {
-            wait = askedFor(config, result);
-            if (exceedsMaxRetryAfter(wait, config.maxRetryAfter)) return result;
-          }
-        } catch (error) {
-          if (last || !shouldRetryError(config, error, request, repeatable)) throw error;
-          threw = true;
-          result = { error };
-          wait = config.retryDelay?.(result, request, attempt);
+        wait = config.retryDelay?.(result, request, attempt);
+        if (wait === undefined) {
+          wait = askedFor(config, result);
+          if (exceedsMaxRetryAfter(wait, config.maxRetryAfter)) return result;
         }
-
-        wait ??= backoffDelay(attempt, config);
-        if (config.budget !== undefined && Date.now() - started + wait >= config.budget) {
-          if (threw) throw result.error;
-          return result;
-        }
-
-        discardBody(result);
-        request.log?.retrying(wait, attempt + 1, attempts - 1, result);
-        await sleep(wait, request.signal).catch((reason: unknown) => {
-          throw calledOffWith(reason);
-        });
+      } catch (error) {
+        if (last || !shouldRetryError(config, error, request, repeatable)) throw error;
+        threw = true;
+        result = { error };
+        wait = config.retryDelay?.(result, request, attempt);
       }
-    },
-  };
+
+      wait ??= backoffDelay(attempt, config);
+      if (config.budget !== undefined && Date.now() - started + wait >= config.budget) {
+        if (threw) throw result.error;
+        return result;
+      }
+
+      discardBody(result);
+      request.log?.retrying(wait, attempt + 1, attempts - 1, result);
+      await sleep(wait, request.signal).catch((reason: unknown) => {
+        throw calledOffWith(reason);
+      });
+    }
+  }
+
+  return { name: 'retry', onOpen: repeated, onSend: repeated };
 }

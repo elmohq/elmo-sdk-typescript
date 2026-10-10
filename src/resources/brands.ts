@@ -8,6 +8,7 @@ import { Tags } from './tags';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { groupParams, mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import { PagePromise, pages } from '../internal/page/page';
 import type {
@@ -26,6 +27,7 @@ import type {
   ListBrandPromptPerformanceResponses,
   ModelVisibility,
   PromptPerformanceList,
+  PromptPerformance as PromptPerformanceSchema,
   ShareOfVoiceEntry,
   ShareOfVoicePoint,
   TagsFilter,
@@ -57,7 +59,7 @@ import type {
 import type { BrandIdPath } from '../types/shared/brand-id-path';
 import type { ListBrandTagsErrors, ListBrandTagsResponses, Tag, TagList } from '../types/tags';
 
-function reviveBrand(value: Brand): void {
+function reviveBrand(value: Mutable<Brand>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('Brand.createdAt', value.createdAt, (raw) => new Date(raw));
   }
@@ -66,7 +68,7 @@ function reviveBrand(value: Brand): void {
   }
 }
 
-function reviveBrandsList(value: BrandsList): void {
+function reviveBrandsList(value: Mutable<BrandsList>): void {
   if (value.data != null) {
     value.data.forEach((item) => {
       reviveBrand(item);
@@ -268,8 +270,9 @@ export declare namespace Brands {
     Opportunities,
     Opportunity,
     OpportunityPrompt,
-    PromptPerformance,
+    PromptPerformanceSchema as PromptPerformance,
     PromptPerformanceList,
+    PromptPerformance as PromptPerformanceResource,
     QueryFanout,
     ShareOfVoiceEntry,
     ShareOfVoicePoint,

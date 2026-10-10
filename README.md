@@ -1,6 +1,6 @@
 # Elmo TypeScript SDK
 
-[![npm](https://img.shields.io/npm/v/@elmohq/sdk)](https://www.npmjs.com/package/@elmohq/sdk) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
+[![npm](https://img.shields.io/npm/v/@elmohq/sdk)](https://www.npmjs.com/package/@elmohq/sdk) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/elmohq/elmo-sdk-typescript/blob/HEAD/LICENSE.md)
 
 Read and manage the brands, prompts, competitors, and AI-visibility analytics of this deployment.
 
@@ -51,7 +51,7 @@ aube add @elmohq/sdk
 
 ## Usage
 
-Set [`ELMO_API_KEY`](https://elmohq.com/docs/api#authentication) in your environment, then call the API:
+Set `ELMO_API_KEY` in your environment, then call the API:
 
 ```ts
 import { Elmo } from '@elmohq/sdk';
@@ -142,6 +142,8 @@ To report a failure, [open an issue](https://github.com/elmohq/elmo-sdk-typescri
 
 ### Authentication
 
+Get an API key from the Elmo dashboard, under **Organization Settings → API Keys**.
+
 The client reads `ELMO_API_KEY` from the environment. To pass the value yourself, set `apiKey`:
 
 ```ts
@@ -150,7 +152,7 @@ import { Elmo } from '@elmohq/sdk';
 const elmo = new Elmo({ apiKey: 'elmo_…' });
 ```
 
-Get `apiKey` from [the page that issues it](https://elmohq.com/docs/api#authentication). `apiKey` also takes a function that returns the value, such as one that reads it from a secret store. The client calls it for each request.
+`apiKey` also takes a function that returns the value, such as one that reads it from a secret store. The client calls it for each request.
 
 ### Browser usage
 
@@ -323,4 +325,4 @@ await brandsList(client);
 
 ## License
 
-MIT. See [LICENSE.md](LICENSE.md).
+MIT. See [LICENSE.md](https://github.com/elmohq/elmo-sdk-typescript/blob/HEAD/LICENSE.md).

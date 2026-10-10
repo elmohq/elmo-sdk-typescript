@@ -5,6 +5,7 @@ import { brandNameRule } from './shared/rule';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { groupParams, mergeParams, placeParams } from '../internal/core/params';
+import type { Mutable } from '../internal/feature/validate';
 import { decoded } from '../internal/feature/validate';
 import { PagePromise, pages } from '../internal/page/page';
 import type {
@@ -24,7 +25,7 @@ import type {
   ReportSummary,
 } from '../types/reports';
 
-function reviveReportSummary(value: ReportSummary): void {
+function reviveReportSummary(value: Mutable<ReportSummary>): void {
   if (value.createdAt != null) {
     value.createdAt = decoded('ReportSummary.createdAt', value.createdAt, (raw) => new Date(raw));
   }
