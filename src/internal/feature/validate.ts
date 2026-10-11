@@ -66,11 +66,6 @@ export function decoded<TIn, TOut>(at: string, value: TIn, read: (value: TIn) =>
   return result;
 }
 
-/**
- * A model with its `readonly` marks off, all the way down. A reviver replaces
- * the values it reads in place, and a field the document marks `readOnly` is
- * `readonly` in the model.
- */
 export type Mutable<T> = T extends (...args: Array<never>) => unknown
   ? T
   : T extends object

@@ -29,6 +29,8 @@ import {
   TimeoutError,
   TransportError,
 } from './internal/core/errors';
+import type { Page } from './internal/core/page';
+import { PagePromise } from './internal/core/page';
 import type {
   AuthResolver,
   AuthScheme,
@@ -63,8 +65,6 @@ import { rulesFeature } from './internal/feature/rules';
 import type { TimeoutPolicy, TimeoutValue } from './internal/feature/timeout';
 import { timeoutFeature } from './internal/feature/timeout';
 import { validateFeature } from './internal/feature/validate';
-import type { Page } from './internal/page/page';
-import { PagePromise } from './internal/page/page';
 import type { Fetch, FetchOptions } from './internal/transport/fetch';
 import { createFetchTransport } from './internal/transport/fetch';
 import { Brands } from './resources/brands';
@@ -293,7 +293,7 @@ export type ClientNarrowing = {
    *
    * Read from the `ELMO_BASE_URL` environment variable when unset.
    *
-   * @default '/api/v1'
+   * @default 'https://app.elmohq.com/api/v1'
    */
   baseURL?: BaseURL;
   /**
@@ -344,7 +344,7 @@ export function client() {
     codecs: [jsonCodec],
     credentials: declaredCredentials,
     defaults: createConfig({
-      baseURL: '/api/v1',
+      baseURL: 'https://app.elmohq.com/api/v1',
       headers: { 'user-agent': `elmo-sdk/${VERSION} (typescript)` },
     }),
     env: { baseURL: 'ELMO_BASE_URL', logLevel: 'ELMO_LOG' },
@@ -353,20 +353,7 @@ export function client() {
       authFeature({ schemes: declaredCredentials }),
       retryFeature(),
       loggerFeature(),
-      timeoutFeature({
-        ms: {
-          overrides: [
-            {
-              include: {
-                openapi: {
-                  operations: ['GET /brands/{brandId}/opportunities', 'POST /tools/analyze'],
-                },
-              },
-              ms: 600000,
-            },
-          ],
-        },
-      }),
+      timeoutFeature(),
       interceptorsFeature(),
       validateFeature(),
     ],

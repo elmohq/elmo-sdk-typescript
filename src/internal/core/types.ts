@@ -110,7 +110,7 @@ export interface RetryRules extends BackoffOptions {
    */
   maxRetryAfter?: number;
   /**
-   * Methods that may be sent again. A failure that never reached the server,
+   * Methods that may be sent again. A request that never reached the API,
    * a call carrying its API's idempotency key, and 408, 425 and 429 are sent
    * again whatever this says.
    *
@@ -132,8 +132,9 @@ export interface RetryRules extends BackoffOptions {
    */
   retryOnTimeout?: boolean;
   /**
-   * Statuses worth another attempt. A reply with `x-should-retry: false` is
-   * never retried.
+   * Statuses worth another attempt. The API overrules them with
+   * `x-should-retry`: a reply answering `false` is never retried, and a
+   * failure answering `true` is, whatever its status and method.
    */
   statuses?: ReadonlyArray<number>;
 }
@@ -162,8 +163,7 @@ export interface CallableDescriptor {
   readonly method?: string;
   readonly pagination?: PaginationDescriptor;
   readonly retry?: RetryRules | false;
-  /** `'json'` where every success is declared as a JSON object or list. */
-  readonly returns?: 'json';
+  readonly returns?: 'json' | 'response';
   readonly rules?: ReadonlyArray<InputRule>;
   readonly serialization?: SerializationDescriptor;
   readonly timeout?: CallTimeout;
@@ -317,13 +317,12 @@ export interface PreparedRequest<TAddress = unknown> {
   /** Each credential put on the request, with the scheme it answers. */
   placed?: ReadonlyArray<PlacedCredential>;
   /**
-   * Set to `manual` by a feature that follows redirects itself. A transport
+   * Set to `manual` where the client follows redirects itself. A transport
    * that honors it hands back the redirect rather than following it.
    */
   redirect?: 'manual';
   /** Calls the request off when it aborts. */
   signal?: AbortSignal | undefined;
-  /** What to tell the caller where the API refuses a call sent with no credential. */
   unauthenticated?: () => string;
 }
 
@@ -362,7 +361,6 @@ export type AnyTransport<TAddress = unknown> = {
 } & Partial<TransportMethods<TAddress>>;
 
 export interface Binding<TAddress = unknown> {
-  /** What a request asks for where neither its call nor its client says. */
   readonly accept?: string;
   applyAuth(credential: Credential, request: PreparedRequest<TAddress>): void;
   readonly name: string;

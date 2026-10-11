@@ -1,6 +1,6 @@
 import type { Client } from '../internal/core/client';
+import { PagePromise, pages } from '../internal/core/page';
 import { groupParams, mergeParams } from '../internal/core/params';
-import { PagePromise, pages } from '../internal/page/page';
 import { listCompetitorsDescriptor } from '../resources/competitors';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type {

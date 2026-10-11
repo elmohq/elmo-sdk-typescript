@@ -131,7 +131,7 @@ export function timeoutFeature(options: TimeoutOptions = {}): Feature {
         request.signal = caller;
       });
     const { response } = result;
-    if (response?.body && (stream || request.options.unread)) {
+    if (response?.body && stream) {
       return { ...result, response: watchedReply(response, wait, done) };
     }
     done();
@@ -141,6 +141,6 @@ export function timeoutFeature(options: TimeoutOptions = {}): Feature {
   return {
     name: 'timeout',
     onOpen: (request, next) => bounded(request, next, true),
-    onSend: (request, next) => bounded(request, next, false),
+    onSend: (request, next) => bounded(request, next, !!request.options.unread),
   };
 }

@@ -33,6 +33,7 @@ export const getBrandOpportunitiesDescriptor = /* @__PURE__ */ callable({
   auth: apiKeyRequirements,
   method: 'get',
   returns: 'json',
+  timeout: 600000,
   validators: { response: /* @__PURE__ */ reviving(reviveBrandOpportunities) },
 } as const);
 

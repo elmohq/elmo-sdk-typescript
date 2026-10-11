@@ -82,7 +82,7 @@ for await (const item of elmo.brands.list()) {
 
 ## Errors
 
-When the API answers with an error status, the call throws `APIError`, or a subclass named for the status. `requestId` holds the id to quote when you report a failure. Every error the SDK throws extends `ElmoError`.
+When the API answers with an error status, the call throws `APIError`, or a subclass named for the status. Every error the SDK throws extends `ElmoError`.
 
 ```ts
 import { APIError, Elmo } from '@elmohq/sdk';
@@ -92,7 +92,7 @@ try {
   await elmo.brands.list();
 } catch (error) {
   if (error instanceof APIError) {
-    console.log(error.status, error.requestId, error.body);
+    console.log(error.status, error.body);
   } else {
     throw error;
   }
@@ -136,7 +136,7 @@ A call made with no credential throws `MissingCredentialError` before anything i
 
 By the time a call throws `RateLimitError`, the client has sent it again up to 2 times. `retryAfterMs` on `RateLimitError` holds how long the API asked to wait, in milliseconds, where it said.
 
-To report a failure, [open an issue](https://github.com/elmohq/elmo-sdk-typescript/issues) and quote `requestId`.
+To report a failure, [open an issue](https://github.com/elmohq/elmo-sdk-typescript/issues).
 
 ## Configuration
 
@@ -166,7 +166,7 @@ const elmo = new Elmo({ dangerouslyAllowBrowser: true });
 
 ### Base URL
 
-Calls go to `/api/v1`. To send them elsewhere, such as a proxy or a gateway, set `baseURL`, or the `ELMO_BASE_URL` environment variable:
+Calls go to `https://app.elmohq.com/api/v1`. To send them elsewhere, such as a proxy or a gateway, set `baseURL`, or the `ELMO_BASE_URL` environment variable:
 
 ```ts
 import { Elmo } from '@elmohq/sdk';
@@ -212,7 +212,7 @@ const elmo = new Elmo({ retry: { delay: 1000, maxDelay: 10000 } });
 
 ### Timeouts
 
-Each attempt may run for 60 seconds. One that runs longer throws `TimeoutError`. To change the limit, set `timeout` in milliseconds on the client or on one call. `false` removes it:
+Each attempt may run for 60 seconds. One that runs longer throws `TimeoutError`. Some operations allow longer, and a `timeout` you set applies to them too. To change the limit, set `timeout` in milliseconds on the client or on one call. `false` removes it:
 
 ```ts
 import { Elmo } from '@elmohq/sdk';
@@ -282,7 +282,6 @@ To read the HTTP response as well, call `.withResponse()` on a call. What comes 
 
 - `data`: what the call resolves with on its own
 - `response`: the `Response` that carried it, for a header or a field the SDK does not model
-- `requestId`: the id to quote when you report a problem
 
 ```ts
 import { Elmo } from '@elmohq/sdk';
@@ -298,11 +297,11 @@ console.log(reply.response.status, reply.response.headers.get('content-type'));
 
 The client reads each variable when its option is not set:
 
-| Variable        | Option     | Default     |
-| --------------- | ---------- | ----------- |
-| `ELMO_API_KEY`  | `apiKey`   |             |
-| `ELMO_BASE_URL` | `baseURL`  | `'/api/v1'` |
-| `ELMO_LOG`      | `logLevel` | `'off'`     |
+| Variable        | Option     | Default                           |
+| --------------- | ---------- | --------------------------------- |
+| `ELMO_API_KEY`  | `apiKey`   |                                   |
+| `ELMO_BASE_URL` | `baseURL`  | `'https://app.elmohq.com/api/v1'` |
+| `ELMO_LOG`      | `logLevel` | `'off'`                           |
 
 ### Forward compatibility
 
@@ -313,7 +312,7 @@ The API can add a field or a value after this version of the SDK is released. Th
 
 ### Bundle size
 
-Where bundle size matters, such as in a browser app, call a function from `@elmohq/sdk/calls` instead. A bundle keeps only the calls you import.
+Where bundle size matters, such as in a serverless or edge function, call a function from `@elmohq/sdk/calls` instead. A bundle keeps only the calls you import.
 
 ```ts
 import { createElmoClient } from '@elmohq/sdk';
@@ -325,4 +324,4 @@ await brandsList(client);
 
 ## License
 
-MIT. See [LICENSE.md](https://github.com/elmohq/elmo-sdk-typescript/blob/HEAD/LICENSE.md).
+[MIT](https://github.com/elmohq/elmo-sdk-typescript/blob/HEAD/LICENSE.md)

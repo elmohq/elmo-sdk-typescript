@@ -9,7 +9,7 @@ export interface RetryOptions extends RetryRules {
    * How long to wait before the next attempt, in milliseconds, in place of the
    * API's retry headers and the backoff. `undefined` keeps the usual wait.
    * After a failure that got no reply, `result` holds only the `error`.
-   * **{@link maxRetryAfter} does not limit what this returns.**
+   * {@link maxRetryAfter} does not limit what this returns.
    */
   retryDelay?(result: Result, request: PreparedRequest, attempt: number): number | undefined;
   /**
@@ -17,8 +17,9 @@ export interface RetryOptions extends RetryRules {
    * `retryOnTimeout`. After a reply, the body is unread: read it from
    * `response.clone()`. After a failure that got no reply, `result` holds only
    * the `error`. A call the API may have acted on is never asked about: a
-   * method outside `methods` is sent again only after 408, 425 or 429, or when
-   * the request never reached the API.
+   * method outside `methods` is sent again only after 408, 425 or 429, after
+   * a failure that answers `x-should-retry: true`, or when the request never
+   * reached the API.
    */
   retryOn?(result: Result, request: PreparedRequest): boolean;
 }
@@ -93,9 +94,12 @@ function shouldRetry(
 ): boolean {
   const { response } = result;
   if (!response) return false;
-  if (!repeatable && !REFUSED_STATUSES.includes(response.status)) return false;
+  const asked = response.headers.get(RETRY_HEADER);
+  const invited = asked === 'true' && response.status >= 400;
+  if (!repeatable && !invited && !REFUSED_STATUSES.includes(response.status)) return false;
   if (config.retryOn) return config.retryOn(result, request);
-  if (response.headers.get(RETRY_HEADER) === 'false') return false;
+  if (asked === 'false') return false;
+  if (invited) return true;
   const { statuses } = config;
   return statuses ? statuses.includes(response.status) : worthAnotherAttempt(response.status);
 }

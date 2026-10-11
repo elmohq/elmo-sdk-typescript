@@ -41,7 +41,7 @@ export class AbortError extends ElmoError {
   }
 }
 
-/** Which way a {@link TransportError} failed. `connect` and `other` have no class of their own. */
+/** Which way a {@link TransportError} failed. */
 export type TransportErrorKind = 'connect' | 'other' | 'timeout';
 
 const TRANSPORT_MESSAGES: Readonly<Record<TransportErrorKind, string>> = {
@@ -224,7 +224,7 @@ function shorten(text: string): string {
   const cut = line.slice(0, MAX_MESSAGE_BODY);
   const space = cut.lastIndexOf(' ');
   const kept = space > MAX_MESSAGE_BODY / 2 ? cut.slice(0, space) : cut;
-  return `${kept.trimEnd()}…`;
+  return `${kept.trimEnd()}...`;
 }
 
 const MESSAGE_KEYS: ReadonlyArray<string> = [
@@ -272,7 +272,7 @@ const REQUEST_ID_FALLBACKS: ReadonlyArray<string> = ['x-correlation-id', 'cf-ray
 
 const REQUEST_ID_NAME = /(?:^|-)request-?id$/;
 
-export function requestIdOf(response: Response): string | undefined {
+export function sniffRequestId(response: Response): string | undefined {
   let named: string | undefined;
   response.headers.forEach((value, name) => {
     if (!named && value && REQUEST_ID_NAME.test(name)) named = value;
@@ -313,7 +313,7 @@ export class APIError<TBody = FailureBody> extends ElmoError {
 
   constructor(status: number, body: unknown, response: Response, note?: string) {
     const reason = response.statusText ? `${status} ${response.statusText}` : `${status}`;
-    const requestId = requestIdOf(response);
+    const requestId = sniffRequestId(response);
     const url = response.url ? ` for "${safeAddress(response.url)}"` : '';
     const where = requestId ? `${url} (request id "${requestId}")` : url;
     const said = describeStatedFailure(body);
@@ -385,7 +385,7 @@ export class DecodeError extends ElmoError {
       value?: unknown;
     } = {},
   ) {
-    const requestId = options.response && requestIdOf(options.response);
+    const requestId = options.response && sniffRequestId(options.response);
     super(requestId ? `${message} The request id is "${requestId}".` : message, {
       cause: options.cause,
     });

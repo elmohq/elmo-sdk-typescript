@@ -3,7 +3,7 @@ import { mergeConfigs } from './config';
 import { applyAliases, applyCredentials } from './credentials';
 import {
   ElmoError,
-  requestIdOf,
+  sniffRequestId,
   unansweredError,
   unsendableHeader,
   UnsupportedInteractionError,
@@ -69,8 +69,6 @@ async function readReply(
         : await binding.readResult!(raw, request, setup.codecs);
 
     result = await runner.result(result, request, ctx);
-
-    if (request.options.unread) return result.response;
 
     const failure = binding.readError?.(result, request) ?? result.error;
 
@@ -221,7 +219,7 @@ export async function exchange(
   let read: Promise<unknown> | undefined;
   return {
     read: (from) => (read ??= readReply(setup, sent, request, from)),
-    requestId: () => sent.result.response && requestIdOf(sent.result.response),
+    requestId: () => sent.result.response && sniffRequestId(sent.result.response),
     response: sent.result.response,
   };
 }

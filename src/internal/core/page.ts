@@ -1,7 +1,7 @@
-import { awaitedResult } from '../core/call-promise';
-import type { Client } from '../core/client';
-import { APIError, ElmoError } from '../core/errors';
-import { LazyPromise, unattended } from '../core/lazy-promise';
+import { awaitedResult } from './call-promise';
+import type { Client } from './client';
+import { APIError, ElmoError } from './errors';
+import { LazyPromise, unattended } from './lazy-promise';
 import type {
   CallableDescriptor,
   ErrorMode,
@@ -11,7 +11,7 @@ import type {
   PaginationStyle,
   ResolvedOptions,
   Result,
-} from '../core/types';
+} from './types';
 
 /**
  * One page of a paginated call. Iterating a page walks from it to the end of

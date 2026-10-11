@@ -34,6 +34,7 @@ export const analyzeBrandDescriptor = /* @__PURE__ */ callable({
       name: 'maxPrompts',
     },
   ],
+  timeout: 600000,
 } as const);
 
 /** One-shot helpers (e.g. brand analysis) that don't persist anything */

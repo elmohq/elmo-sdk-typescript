@@ -7,10 +7,10 @@ import { brandNameRule, domainsRule, nameRule } from './shared/rule';
 import { Tags } from './tags';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
+import { PagePromise, pages } from '../internal/core/page';
 import { groupParams, mergeParams, placeParams } from '../internal/core/params';
 import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
-import { PagePromise, pages } from '../internal/page/page';
 import type {
   BrandAnalytics,
   BrandQueryFanout,
