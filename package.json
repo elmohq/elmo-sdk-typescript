@@ -9,6 +9,7 @@
     "sdk",
     "typescript"
   ],
+  "homepage": "https://www.elmohq.com",
   "bugs": {
     "url": "https://github.com/elmohq/elmo-sdk-typescript/issues"
   },

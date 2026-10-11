@@ -2,11 +2,11 @@
 
 [![npm](https://img.shields.io/npm/v/@elmohq/sdk)](https://www.npmjs.com/package/@elmohq/sdk) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/elmohq/elmo-sdk-typescript/blob/HEAD/LICENSE.md)
 
-Read and manage the brands, prompts, competitors, and AI-visibility analytics of this deployment.
+Track how AI answer engines like ChatGPT, Claude, Perplexity, Gemini, and Google AI Overviews mention and cite your brands.
 
 This package calls the Elmo API from TypeScript and JavaScript. It includes types for every request and reply.
 
-[Issues](https://github.com/elmohq/elmo-sdk-typescript/issues)
+[Website](https://www.elmohq.com) · [Issues](https://github.com/elmohq/elmo-sdk-typescript/issues)
 
 ## Installation
 
