@@ -173,6 +173,7 @@ import type { ModelFilter, WindowEnd, WindowStart } from './types/shared/model-f
 import type { NotFoundError as NotFoundErrorResponse } from './types/shared/not-found-error';
 import type { Page as PageParameter } from './types/shared/page';
 import type { Pagination } from './types/shared/pagination';
+import type { Position, SentimentSummary } from './types/shared/position';
 import type { ValidationError } from './types/shared/validation-error';
 import type {
   AnalyzeBrandErrors,
@@ -182,7 +183,7 @@ import type {
 } from './types/tools';
 
 /** The version of this package. */
-export const VERSION = '0.1.2';
+export const VERSION = '0.1.3';
 
 /** The address calls are sent to: a URL with its scheme. */
 export type BaseURL = `${string}://${string}/api/v1` | (string & {});
@@ -609,6 +610,7 @@ export declare namespace Elmo {
     PageResult,
     Pagination,
     PaymentRequiredErrorResponse,
+    Position,
     PreparedRequest,
     Prompt,
     Prompts,
@@ -623,6 +625,7 @@ export declare namespace Elmo {
     RetryAfterHeader,
     RetryOptions,
     RetryRules,
+    SentimentSummary,
     TagsFilter,
     TimeoutPolicy,
     TimeoutValue,

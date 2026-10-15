@@ -6,6 +6,7 @@ import type {
 } from './shared/error';
 import type { MentionsSummary } from './shared/mention-entry';
 import type { NotFoundError } from './shared/not-found-error';
+import type { Position, SentimentSummary } from './shared/position';
 import type { ValidationError } from './shared/validation-error';
 
 export type CitedURLEntry = {
@@ -33,10 +34,12 @@ export type PromptSnapshot = {
   /** End of the queried date range (YYYY-MM-DD) */
   endDate: string;
   mentions: MentionsSummary;
+  position: Position;
   /** Unique identifier for the prompt */
   promptId: string;
   /** The prompt text */
   promptValue: string;
+  sentiment: SentimentSummary;
   /** Start of the queried date range (YYYY-MM-DD) */
   startDate: string;
 };

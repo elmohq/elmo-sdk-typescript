@@ -8,7 +8,9 @@ import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type {
   BrandAnalytics,
+  BrandPosition,
   BrandQueryFanout,
+  BrandSentiment,
   CitationDomain,
   CitationDomainList,
   CitationURL,
@@ -296,6 +298,8 @@ export class QueryFanout extends ElmoResource {
 export declare namespace Analytics {
   export type {
     BrandAnalytics,
+    BrandPosition,
+    BrandSentiment,
     GetBrandAnalyticsErrors,
     GetBrandAnalyticsParams,
     GetBrandAnalyticsResponses,

@@ -6,6 +6,7 @@ import type {
 } from './shared/error';
 import type { ModelFilter, WindowEnd, WindowStart } from './shared/model-filter';
 import type { NotFoundError } from './shared/not-found-error';
+import type { Position, SentimentSummary } from './shared/position';
 import type { ValidationError } from './shared/validation-error';
 
 /**
@@ -36,8 +37,10 @@ export type ShareOfVoiceEntry = {
   mentions: number;
   /** Brand or competitor name. */
   name: string;
+  position: Position;
   /** Distinct prompts this entity appeared in. */
   prompts: number;
+  sentiment: SentimentSummary;
   /**
    * This entity's share of all brand and competitor mentions. Ratio 0–1; multiply by 100 for a
    * percentage.
@@ -211,7 +214,9 @@ export type PromptPerformance = {
   competitorMentionRate: number;
   firstEvaluatedAt: Date | null;
   lastRunAt: Date | null;
+  position: Position;
   promptId: string;
+  sentiment: SentimentSummary;
   tags: Array<string>;
   totalRuns: number;
   value: string;
@@ -229,7 +234,9 @@ export type ModelVisibility = {
   citations: number;
   label: string;
   model: string;
+  position: Position;
   runs: number;
+  sentiment: SentimentSummary;
   /**
    * Share of this model's runs that mentioned the brand. Ratio 0–1; multiply by 100 for a
    * percentage.
@@ -242,16 +249,17 @@ export type ModelVisibility = {
 
 /**
  * Every non-paginated figure for a brand over one window. There is no parameter for selecting a
- * subset: the four computations behind this share one scope resolution and run concurrently, so a
- * subset would save a caller a fraction of one request and cost everyone a parameter to reason
- * about.
+ * subset: the computations behind this cover the same prompts and run concurrently, so a subset
+ * would save a caller a fraction of one request and cost everyone a parameter to reason about.
  */
 export type BrandAnalytics = {
   brandId: string;
   brandName: string;
   /** Per-model visibility and run counts. Only models that produced a run in the window appear. */
   models: Array<ModelVisibility>;
+  position: BrandPosition;
   range: DateRange;
+  sentiment: BrandSentiment;
   /** The brand against its tracked competitors. */
   shareOfVoice: {
     /**
@@ -286,6 +294,46 @@ export type BrandAnalytics = {
     current: number | null;
     series: Array<VisibilityPoint>;
   };
+};
+
+/**
+ * **Experimental — the shape may still change.**
+ *
+ * The brand's sentiment over the window, with the counts for each day so a client can chart or
+ * smooth them.
+ */
+export type BrandSentiment = SentimentSummary & {
+  series: Array<{
+    date: string;
+    /** @minimum 0 */
+    mixed: number;
+    /** @minimum 0 */
+    negative: number;
+    /** @minimum 0 */
+    neutral: number;
+    /** @minimum 0 */
+    positive: number;
+  }>;
+};
+
+/**
+ * **Experimental — the shape may still change.**
+ *
+ * The brand's position among the tracked companies the answers name, 1 being named first, averaged
+ * over the window and per day.
+ */
+export type BrandPosition = {
+  /**
+   * Average position over the window, to one decimal; null when no answer ranks it.
+   *
+   * @minimum 1
+   */
+  average: number | null;
+  series: Array<{
+    /** @minimum 1 */
+    average: number | null;
+    date: string;
+  }>;
 };
 
 /** Comma-separated prompt tags. Only prompts carrying at least one of them are counted. */

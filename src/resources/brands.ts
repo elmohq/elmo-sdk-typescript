@@ -13,7 +13,9 @@ import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type {
   BrandAnalytics,
+  BrandPosition,
   BrandQueryFanout,
+  BrandSentiment,
   DateRange,
   FanoutQuery,
   GetBrandAnalyticsErrors,
@@ -239,7 +241,9 @@ export declare namespace Brands {
     BrandAnalytics,
     BrandIdPath,
     BrandOpportunities,
+    BrandPosition,
     BrandQueryFanout,
+    BrandSentiment,
     BrandsList,
     Citations,
     CitedPage,

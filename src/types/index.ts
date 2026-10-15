@@ -1,6 +1,8 @@
 export type {
   BrandAnalytics,
+  BrandPosition,
   BrandQueryFanout,
+  BrandSentiment,
   CitationDomain,
   CitationDomainList,
   CitationURL,
@@ -126,7 +128,9 @@ export type {
   ListPromptRunsErrors,
   ListPromptRunsParams,
   ListPromptRunsResponses,
+  MentionAssessment,
   Run,
+  RunAssessments,
   RunCitation,
   RunList,
   RunSummary,
@@ -146,6 +150,7 @@ export type { ModelFilter, WindowEnd, WindowStart } from './shared/model-filter'
 export type { NotFoundError } from './shared/not-found-error';
 export type { Page } from './shared/page';
 export type { Pagination } from './shared/pagination';
+export type { Position, SentimentSummary } from './shared/position';
 export type { ValidationError } from './shared/validation-error';
 export type {
   CitedURLEntry,
