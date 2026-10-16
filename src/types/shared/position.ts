@@ -28,24 +28,16 @@ export type SentimentSummary = {
   mixed: number;
   /** @minimum 0 */
   negative: number;
-  /**
-   * Negative answers as a fraction of those with a sentiment (the four counts). Ratio 0–1; null
-   * when there are none.
-   *
-   * @minimum 0
-   * @maximum 1
-   */
-  negativeShare: number | null;
   /** @minimum 0 */
   neutral: number;
   /** @minimum 0 */
   positive: number;
   /**
-   * Positive answers as a fraction of those with a sentiment (the four counts). Ratio 0–1; null
-   * when there are none.
+   * Net sentiment of the answers with a sentiment: positive counts 1, neutral and mixed 0.5,
+   * negative 0, averaged. 0.5 means neutral on balance. Ratio 0–1; null when there are none.
    *
    * @minimum 0
    * @maximum 1
    */
-  positiveShare: number | null;
+  score: number | null;
 };
