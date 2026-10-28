@@ -6,6 +6,8 @@ import type {
 } from './shared/error';
 import type { ModelFilter, WindowEnd, WindowStart } from './shared/model-filter';
 import type { NotFoundError } from './shared/not-found-error';
+import type { Page } from './shared/page';
+import type { Pagination } from './shared/pagination';
 import type { Position, SentimentSummary } from './shared/position';
 import type { ValidationError } from './shared/validation-error';
 
@@ -104,8 +106,12 @@ export type CitationDomain = {
 
 export type CitationDomainList = {
   brandId: string;
-  /** Every domain cited over the window, ordered by citation count. */
+  /**
+   * This page of the domains cited over the window, ordered by citation count. `totals` covers
+   * every domain.
+   */
   data: Array<CitationDomain>;
+  pagination: Pagination;
   range: DateRange;
   totals: {
     citations: number;
@@ -155,8 +161,12 @@ export type CitationURL = {
 
 export type CitationURLList = {
   brandId: string;
-  /** Every URL cited over the window, ordered by citation count. */
+  /**
+   * This page of the URLs cited over the window, ordered by citation count. `totals` covers every
+   * URL.
+   */
   data: Array<CitationURL>;
+  pagination: Pagination;
   range: DateRange;
   totals: {
     citations: number;
@@ -183,13 +193,17 @@ export type BrandQueryFanout = {
    * @maximum 1
    */
   coverageRate: number;
-  /** Every distinct sub-query over the window, ordered by the runs that ran it. */
+  /**
+   * This page of the distinct sub-queries over the window, ordered by the runs that ran them. The
+   * totals cover every query.
+   */
   data: Array<FanoutQuery>;
   /**
    * Runs that searched at all. Engines that don't expose their searches contribute runs but no
    * queries.
    */
   fanoutRuns: number;
+  pagination: Pagination;
   range: DateRange;
   totalQueries: number;
   totalRuns: number;
@@ -338,6 +352,23 @@ export type BrandPosition = {
 
 /** Comma-separated prompt tags. Only prompts carrying at least one of them are counted. */
 export type TagsFilter = string;
+
+/**
+ * Items per page. Values above the maximum are clamped, not rejected. The default is large enough
+ * that most windows fit on the first page.
+ *
+ * @default 1000
+ * @minimum 1
+ * @maximum 1000
+ */
+export type AnalyticsListLimit = number;
+
+/**
+ * Only rows in this category, as the dashboard classifies them for this brand: `brand`,
+ * `competitor`, `editorial`, `reviews`, `ecommerce`, `social`, `developer`, `pr`, `reference`,
+ * `institutional` or `other`.
+ */
+export type CitationCategoryFilter = string;
 
 export type GetBrandAnalyticsErrors = {
   /** Invalid request data */
@@ -492,6 +523,30 @@ export type ListBrandCitationDomainsParams = {
   model?: ModelFilter;
   /** Comma-separated prompt tags. Only prompts carrying at least one of them are counted. */
   tags?: TagsFilter;
+  /**
+   * Page number, 1-based.
+   *
+   * @default 1
+   * @minimum 1
+   */
+  page?: Page;
+  /**
+   * Items per page. Values above the maximum are clamped, not rejected. The default is large enough
+   * that most windows fit on the first page.
+   *
+   * @default 1000
+   * @minimum 1
+   * @maximum 1000
+   */
+  limit?: AnalyticsListLimit;
+  /** Case-insensitive substring match on the domain, across every domain cited in the window. */
+  q?: string;
+  /**
+   * Only rows in this category, as the dashboard classifies them for this brand: `brand`,
+   * `competitor`, `editorial`, `reviews`, `ecommerce`, `social`, `developer`, `pr`, `reference`,
+   * `institutional` or `other`.
+   */
+  category?: CitationCategoryFilter;
 };
 
 export type ListBrandCitationURLsParams = {
@@ -512,6 +567,35 @@ export type ListBrandCitationURLsParams = {
   model?: ModelFilter;
   /** Comma-separated prompt tags. Only prompts carrying at least one of them are counted. */
   tags?: TagsFilter;
+  /**
+   * Page number, 1-based.
+   *
+   * @default 1
+   * @minimum 1
+   */
+  page?: Page;
+  /**
+   * Items per page. Values above the maximum are clamped, not rejected. The default is large enough
+   * that most windows fit on the first page.
+   *
+   * @default 1000
+   * @minimum 1
+   * @maximum 1000
+   */
+  limit?: AnalyticsListLimit;
+  /**
+   * Case-insensitive substring match on the URL or page title, across every URL cited in the
+   * window.
+   */
+  q?: string;
+  /**
+   * Only rows in this category, as the dashboard classifies them for this brand: `brand`,
+   * `competitor`, `editorial`, `reviews`, `ecommerce`, `social`, `developer`, `pr`, `reference`,
+   * `institutional` or `other`.
+   */
+  category?: CitationCategoryFilter;
+  /** Only pages of this type, e.g. `article`, `review` or `product`. */
+  pageType?: string;
 };
 
 export type ListBrandPromptPerformanceParams = {
@@ -552,4 +636,22 @@ export type GetBrandQueryFanoutParams = {
   model?: ModelFilter;
   /** Comma-separated prompt tags. Only prompts carrying at least one of them are counted. */
   tags?: TagsFilter;
+  /**
+   * Page number, 1-based.
+   *
+   * @default 1
+   * @minimum 1
+   */
+  page?: Page;
+  /**
+   * Items per page. Values above the maximum are clamped, not rejected. The default is large enough
+   * that most windows fit on the first page.
+   *
+   * @default 1000
+   * @minimum 1
+   * @maximum 1000
+   */
+  limit?: AnalyticsListLimit;
+  /** Case-insensitive substring match on the search, across every search run in the window. */
+  q?: string;
 };

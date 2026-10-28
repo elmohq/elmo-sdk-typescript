@@ -12,10 +12,12 @@ import { groupParams, mergeParams, placeParams } from '../internal/core/params';
 import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
 import type {
+  AnalyticsListLimit,
   BrandAnalytics,
   BrandPosition,
   BrandQueryFanout,
   BrandSentiment,
+  CitationCategoryFilter,
   DateRange,
   FanoutQuery,
   GetBrandAnalyticsErrors,
@@ -237,6 +239,7 @@ export class Brands extends ElmoResource {
 export declare namespace Brands {
   export type {
     Analytics,
+    AnalyticsListLimit,
     Brand,
     BrandAnalytics,
     BrandIdPath,
@@ -245,6 +248,7 @@ export declare namespace Brands {
     BrandQueryFanout,
     BrandSentiment,
     BrandsList,
+    CitationCategoryFilter,
     Citations,
     CitedPage,
     CreateBrandErrors,

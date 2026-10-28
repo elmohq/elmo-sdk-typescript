@@ -1,5 +1,5 @@
-import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import type { Client } from '../internal/core/client';
+import { PagePromise, pages } from '../internal/core/page';
 import { mergeParams, placeParams } from '../internal/core/params';
 import {
   listBrandCitationDomainsDescriptor,
@@ -7,9 +7,10 @@ import {
 } from '../resources/analytics';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type {
+  CitationDomain,
+  CitationDomainList,
   ListBrandCitationDomainsErrors,
   ListBrandCitationDomainsParams,
-  ListBrandCitationDomainsResponses,
 } from '../types/analytics';
 import type { BrandIdPath } from '../types/shared/brand-id-path';
 
@@ -24,8 +25,8 @@ export function brandsCitationsDomainsList(
   brandId: BrandIdPath,
   params: ListBrandCitationDomainsParams,
   options?: RequestOptions,
-): RestCallPromise<ListBrandCitationDomainsResponses, ListBrandCitationDomainsErrors> {
-  return callPromise(
+): PagePromise<CitationDomain, CitationDomainList, ListBrandCitationDomainsErrors> {
+  return pages(
     options?.client ?? client,
     listBrandCitationDomainsDescriptor,
     mergeParams(

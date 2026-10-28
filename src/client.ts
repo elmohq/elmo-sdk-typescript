@@ -77,7 +77,7 @@ import { Reports } from './resources/reports';
 import type { RequestOptions } from './resources/shared/request-options';
 import { ElmoResource } from './resources/shared/resource';
 import { Tools } from './resources/tools';
-import type { DateRange, TagsFilter } from './types/analytics';
+import type { AnalyticsListLimit, DateRange, TagsFilter } from './types/analytics';
 import type {
   Brand,
   BrandsList,
@@ -183,7 +183,7 @@ import type {
 } from './types/tools';
 
 /** The version of this package. */
-export const VERSION = '0.2.0';
+export const VERSION = '0.2.1';
 
 /** The address calls are sent to: a URL with its scheme. */
 export type BaseURL = `${string}://${string}/api/v1` | (string & {});
@@ -500,6 +500,7 @@ export class Elmo extends ElmoResource {
 
 export declare namespace Elmo {
   export type {
+    AnalyticsListLimit,
     AnalyzeBrandErrors,
     AnalyzeBrandParams,
     AnalyzeBrandResponses,

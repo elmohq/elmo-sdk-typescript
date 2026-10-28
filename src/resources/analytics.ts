@@ -3,6 +3,7 @@ import type { RequestOptions } from './shared/request-options';
 import { ElmoResource } from './shared/resource';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
+import { PagePromise, pages } from '../internal/core/page';
 import { mergeParams, placeParams } from '../internal/core/params';
 import type { Mutable } from '../internal/feature/validate';
 import { decoded, reviving } from '../internal/feature/validate';
@@ -11,6 +12,7 @@ import type {
   BrandPosition,
   BrandQueryFanout,
   BrandSentiment,
+  CitationCategoryFilter,
   CitationDomain,
   CitationDomainList,
   CitationURL,
@@ -78,6 +80,15 @@ export const listBrandCitationDomainsDescriptor = /* @__PURE__ */ callable({
   address: '/brands/{brandId}/citations/domains',
   auth: apiKeyRequirements,
   method: 'get',
+  pagination: {
+    items: 'data',
+    limitParam: 'limit',
+    pages: 'pagination.totalPages',
+    param: 'page',
+    size: 'pagination.limit',
+    style: 'page',
+    total: 'pagination.total',
+  },
   returns: 'json',
   validators: { response: /* @__PURE__ */ reviving(reviveCitationDomainList) },
 } as const);
@@ -94,6 +105,15 @@ export const listBrandCitationURLsDescriptor = /* @__PURE__ */ callable({
   address: '/brands/{brandId}/citations/urls',
   auth: apiKeyRequirements,
   method: 'get',
+  pagination: {
+    items: 'data',
+    limitParam: 'limit',
+    pages: 'pagination.totalPages',
+    param: 'page',
+    size: 'pagination.limit',
+    style: 'page',
+    total: 'pagination.total',
+  },
   returns: 'json',
   validators: { response: /* @__PURE__ */ reviving(reviveCitationUrlList) },
 } as const);
@@ -148,6 +168,15 @@ export const getBrandQueryFanoutDescriptor = /* @__PURE__ */ callable({
   address: '/brands/{brandId}/query-fanout',
   auth: apiKeyRequirements,
   method: 'get',
+  pagination: {
+    items: 'data',
+    limitParam: 'limit',
+    pages: 'pagination.totalPages',
+    param: 'page',
+    size: 'pagination.limit',
+    style: 'page',
+    total: 'pagination.total',
+  },
   returns: 'json',
   validators: { response: /* @__PURE__ */ reviving(reviveBrandQueryFanout) },
 } as const);
@@ -185,15 +214,13 @@ export class Domains extends ElmoResource {
    *
    * Domains the engines cited when answering this brand's prompts, categorized and compared against
    * the equal-length window immediately before this one.
-   *
-   * @param brandId Brand identifier.
    */
   public list(
     brandId: BrandIdPath,
     params: ListBrandCitationDomainsParams,
     options?: RequestOptions,
-  ): RestCallPromise<ListBrandCitationDomainsResponses, ListBrandCitationDomainsErrors> {
-    return callPromise(
+  ): PagePromise<CitationDomain, CitationDomainList, ListBrandCitationDomainsErrors> {
+    return pages(
       options?.client ?? this.client,
       listBrandCitationDomainsDescriptor,
       mergeParams(
@@ -210,15 +237,13 @@ export class URLs extends ElmoResource {
    * List cited URLs
    *
    * Individual pages the engines cited, with their category and page type.
-   *
-   * @param brandId Brand identifier.
    */
   public list(
     brandId: BrandIdPath,
     params: ListBrandCitationURLsParams,
     options?: RequestOptions,
-  ): RestCallPromise<ListBrandCitationURLsResponses, ListBrandCitationURLsErrors> {
-    return callPromise(
+  ): PagePromise<CitationURL, CitationURLList, ListBrandCitationURLsErrors> {
+    return pages(
       options?.client ?? this.client,
       listBrandCitationURLsDescriptor,
       mergeParams(
@@ -279,15 +304,13 @@ export class QueryFanout extends ElmoResource {
    *
    * The searches engines ran while answering this brand's prompts. Engines that don't expose their
    * searches still contribute runs, so `coverageRate` is the honest denominator.
-   *
-   * @param brandId Brand identifier.
    */
   public get(
     brandId: BrandIdPath,
     params: GetBrandQueryFanoutParams,
     options?: RequestOptions,
-  ): RestCallPromise<GetBrandQueryFanoutResponses, GetBrandQueryFanoutErrors> {
-    return callPromise(
+  ): PagePromise<FanoutQuery, BrandQueryFanout, GetBrandQueryFanoutErrors> {
+    return pages(
       options?.client ?? this.client,
       getBrandQueryFanoutDescriptor,
       mergeParams(placeParams({ ...params, brandId }, getBrandQueryFanoutFields, 'query'), options),
@@ -332,6 +355,7 @@ export declare namespace URLs {
 
 export declare namespace Citations {
   export type {
+    CitationCategoryFilter,
     CitationDomain,
     CitationDomainList,
     CitationURL,

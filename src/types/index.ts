@@ -1,8 +1,10 @@
 export type {
+  AnalyticsListLimit,
   BrandAnalytics,
   BrandPosition,
   BrandQueryFanout,
   BrandSentiment,
+  CitationCategoryFilter,
   CitationDomain,
   CitationDomainList,
   CitationURL,

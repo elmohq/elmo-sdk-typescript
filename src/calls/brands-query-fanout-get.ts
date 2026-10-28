@@ -1,12 +1,13 @@
-import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import type { Client } from '../internal/core/client';
+import { PagePromise, pages } from '../internal/core/page';
 import { mergeParams, placeParams } from '../internal/core/params';
 import { getBrandQueryFanoutDescriptor, getBrandQueryFanoutFields } from '../resources/analytics';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type {
+  BrandQueryFanout,
+  FanoutQuery,
   GetBrandQueryFanoutErrors,
   GetBrandQueryFanoutParams,
-  GetBrandQueryFanoutResponses,
 } from '../types/analytics';
 import type { BrandIdPath } from '../types/shared/brand-id-path';
 
@@ -21,8 +22,8 @@ export function brandsQueryFanoutGet(
   brandId: BrandIdPath,
   params: GetBrandQueryFanoutParams,
   options?: RequestOptions,
-): RestCallPromise<GetBrandQueryFanoutResponses, GetBrandQueryFanoutErrors> {
-  return callPromise(
+): PagePromise<FanoutQuery, BrandQueryFanout, GetBrandQueryFanoutErrors> {
+  return pages(
     options?.client ?? client,
     getBrandQueryFanoutDescriptor,
     mergeParams(placeParams({ ...params, brandId }, getBrandQueryFanoutFields, 'query'), options),
