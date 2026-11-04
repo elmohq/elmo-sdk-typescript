@@ -7,11 +7,11 @@ export type Error = {
    * `model_not_in_plan`, `model_picks_exceeded`, `premium_not_in_plan`, `premium_pool_exhausted`,
    * `cadence_faster_than_plan`, `internal_error`.
    */
-  code?: string;
+  code: string;
   /** Error type */
   error: string;
   /** Detailed error message */
-  message?: string;
+  message: string;
 };
 
 /** Authentication required */
