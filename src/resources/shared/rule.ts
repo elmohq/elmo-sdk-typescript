@@ -18,6 +18,12 @@ export const brandNameRule: InputRule = {
   of: 'characters',
 };
 
+export const brandIdRule: InputRule = {
+  min: 1,
+  name: 'brandId',
+  of: 'characters',
+};
+
 export const valueRule: InputRule = {
   min: 1,
   name: 'value',

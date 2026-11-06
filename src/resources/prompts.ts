@@ -2,7 +2,7 @@ import { Runs } from './runs';
 import { apiKeyRequirements } from './shared/auth';
 import type { RequestOptions } from './shared/request-options';
 import { ElmoResource } from './shared/resource';
-import { valueRule } from './shared/rule';
+import { brandIdRule, valueRule } from './shared/rule';
 import { Snapshot } from './snapshots';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
@@ -99,7 +99,7 @@ export const createPromptDescriptor = /* @__PURE__ */ callable({
   mediaType: 'application/json',
   method: 'post',
   returns: 'json',
-  rules: [valueRule],
+  rules: [brandIdRule, valueRule],
   validators: { response: /* @__PURE__ */ reviving(revivePrompt) },
 } as const);
 

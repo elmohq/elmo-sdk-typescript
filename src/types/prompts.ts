@@ -203,7 +203,11 @@ export type ListPromptsParams = {
 };
 
 export type CreatePromptParams = {
-  /** Brand identifier this prompt belongs to */
+  /**
+   * Brand identifier this prompt belongs to
+   *
+   * @minLength 1
+   */
   brandId: string;
   /**
    * The prompt text

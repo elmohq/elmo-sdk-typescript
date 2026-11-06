@@ -1,7 +1,7 @@
 import { apiKeyRequirements } from './shared/auth';
 import type { RequestOptions } from './shared/request-options';
 import { ElmoResource } from './shared/resource';
-import { nameRule } from './shared/rule';
+import { brandIdRule, nameRule } from './shared/rule';
 import { callPromise, RestCallPromise } from '../internal/core/call-promise';
 import { callable } from '../internal/core/callable';
 import { PagePromise, pages } from '../internal/core/page';
@@ -71,14 +71,7 @@ export const createCompetitorDescriptor = /* @__PURE__ */ callable({
   mediaType: 'application/json',
   method: 'post',
   returns: 'json',
-  rules: [
-    {
-      min: 1,
-      name: 'brandId',
-      of: 'characters',
-    },
-    nameRule,
-  ],
+  rules: [brandIdRule, nameRule],
   validators: { response: /* @__PURE__ */ reviving(reviveCompetitor) },
 } as const);
 

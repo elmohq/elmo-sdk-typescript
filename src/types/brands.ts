@@ -176,7 +176,9 @@ export type CreateBrandParams = {
   domains: Array<string>;
   aliases?: Array<string>;
   competitors?: Array<{
+    /** @default [] */
     aliases?: Array<string>;
+    /** @default [] */
     domains?: Array<string>;
     /** @minLength 1 */
     name: string;
@@ -184,6 +186,7 @@ export type CreateBrandParams = {
   prompts?: Array<{
     /** @default true */
     enabled?: boolean;
+    /** @default [] */
     tags?: Array<string>;
     /** @minLength 1 */
     value: string;
@@ -198,6 +201,8 @@ export type CreateBrandParams = {
    *
    * An admin key omitting this field is currently the only way to create an organization over the
    * API.
+   *
+   * @minLength 1
    */
   organizationId?: string;
 };

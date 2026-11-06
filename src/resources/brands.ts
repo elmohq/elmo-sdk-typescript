@@ -116,6 +116,11 @@ export const createBrandDescriptor = /* @__PURE__ */ callable({
     },
     nameRule,
     domainsRule,
+    {
+      min: 1,
+      name: 'organizationId',
+      of: 'characters',
+    },
   ],
   validators: { response: /* @__PURE__ */ reviving(reviveBrand) },
 } as const);
