@@ -9,7 +9,12 @@ import type {
   UpdateCompetitorResponses,
 } from '../types/competitors';
 
-/** Update a competitor */
+/**
+ * Update a competitor
+ *
+ * Rename a competitor, or replace its domains or aliases. A competitor outside the key's reach
+ * answers `404`, identically to one that does not exist.
+ */
 export function competitorsUpdate(
   client: Client,
   competitorId: string,

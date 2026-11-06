@@ -116,7 +116,12 @@ export const updateCompetitorDescriptor = /* @__PURE__ */ callable({
 
 /** Manage brand competitors */
 export class Competitors extends ElmoResource {
-  /** Add a competitor */
+  /**
+   * Add a competitor
+   *
+   * A `brandId` outside the key's reach answers `400`, identically to one that does not exist. A
+   * brand tracks at most 500 competitors; adding one past that answers `409`.
+   */
   public create(
     params: CreateCompetitorParams,
     options?: RequestOptions,
@@ -130,6 +135,8 @@ export class Competitors extends ElmoResource {
 
   /**
    * Delete a competitor
+   *
+   * Permanently delete a competitor. The response is the deleted competitor.
    *
    * @param competitorId Competitor identifier (UUID)
    */
@@ -147,6 +154,8 @@ export class Competitors extends ElmoResource {
   /**
    * Get a competitor
    *
+   * A competitor outside the key's reach answers `404`, identically to one that does not exist.
+   *
    * @param competitorId Competitor identifier (UUID)
    */
   public get(
@@ -160,6 +169,9 @@ export class Competitors extends ElmoResource {
     );
   }
 
+  /**
+   * The competitors of the brands this key can reach, newest first. Pass `brandId` for one brand's.
+   */
   public list(
     params?: ListCompetitorsParams,
     options?: RequestOptions,
@@ -173,6 +185,9 @@ export class Competitors extends ElmoResource {
 
   /**
    * Update a competitor
+   *
+   * Rename a competitor, or replace its domains or aliases. A competitor outside the key's reach
+   * answers `404`, identically to one that does not exist.
    *
    * @param competitorId Competitor identifier (UUID)
    */

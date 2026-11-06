@@ -1,16 +1,16 @@
 {
   "targets": {
     "typescript": {
-      "commit": "8abece8aea8aa430ca2ccca4bdfdbf81f3d6a4f0",
-      "contract": "sha256:275581357f60659531715e9460e3f957697812a93d198c2d1836d7a6555c1071",
+      "commit": "6c0e8900671397f910391a01cbb861f688c5d2b5",
+      "contract": "sha256:faa2df7c0be9d1425eeb576ff4240a219a30ffa372a9397b6c3bc3277d74e863",
       "generator": "0.0.24",
       "since": {
-        "commit": "e139254cf9c9d1612f35112a4f0f460d9ac6f8f7",
-        "contract": "sha256:3313dcbbada31422c56f8159cc68a40386c6eb3a80f543ca75a30fbb36d68ce5",
+        "commit": "8abece8aea8aa430ca2ccca4bdfdbf81f3d6a4f0",
+        "contract": "sha256:275581357f60659531715e9460e3f957697812a93d198c2d1836d7a6555c1071",
         "generator": "0.0.24",
-        "version": "0.2.1"
+        "version": "0.3.0"
       },
-      "version": "0.3.0"
+      "version": "0.4.0"
     }
   },
   "version": 1

@@ -5,6 +5,7 @@ import { listBrandsDescriptor } from '../resources/brands';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { Brand, BrandsList, ListBrandsErrors, ListBrandsParams } from '../types/brands';
 
+/** The brands this key can reach, newest first. */
 export function brandsList(
   client: Client,
   params?: ListBrandsParams,

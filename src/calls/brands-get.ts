@@ -5,7 +5,11 @@ import { getBrandDescriptor, getBrandFields } from '../resources/brands';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { GetBrandErrors, GetBrandResponses } from '../types/brands';
 
-/** Get a brand */
+/**
+ * Get a brand
+ *
+ * A brand outside the key's reach answers `404`, identically to one that does not exist.
+ */
 export function brandsGet(
   client: Client,
   brandId: string,

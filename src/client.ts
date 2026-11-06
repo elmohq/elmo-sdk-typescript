@@ -183,7 +183,7 @@ import type {
 } from './types/tools';
 
 /** The version of this package. */
-export const VERSION = '0.3.0';
+export const VERSION = '0.4.0';
 
 /** The address calls are sent to: a URL with its scheme. */
 export type BaseURL = `${string}://${string}/api/v1` | (string & {});

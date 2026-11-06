@@ -144,7 +144,17 @@ export const updateBrandDescriptor = /* @__PURE__ */ callable({
 
 /** Manage brand records */
 export class Brands extends ElmoResource {
-  /** Create a brand */
+  /**
+   * Create a brand
+   *
+   * A brand, its competitors and its prompts, created in one request. They are written together, so
+   * a request that fails leaves none of them behind, and the prompts are scheduled for execution as
+   * soon as the brand exists.
+   *
+   * Brand ids are chosen by the caller and unique across the instance: an id that is already taken
+   * answers `409`, without saying who holds it. A competitor with no domain other than the brand's
+   * own website is skipped.
+   */
   public create(
     params: CreateBrandParams,
     options?: RequestOptions,
@@ -159,6 +169,8 @@ export class Brands extends ElmoResource {
   /**
    * Get a brand
    *
+   * A brand outside the key's reach answers `404`, identically to one that does not exist.
+   *
    * @param brandId Brand identifier
    */
   public get(
@@ -172,6 +184,7 @@ export class Brands extends ElmoResource {
     );
   }
 
+  /** The brands this key can reach, newest first. */
   public list(
     params?: ListBrandsParams,
     options?: RequestOptions,
@@ -185,6 +198,9 @@ export class Brands extends ElmoResource {
 
   /**
    * Update a brand
+   *
+   * Change a brand's name, domains or aliases. A brand outside the key's reach answers `404`,
+   * identically to one that does not exist.
    *
    * @param brandId Brand identifier
    */

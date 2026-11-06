@@ -5,7 +5,17 @@ import { createBrandDescriptor } from '../resources/brands';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { CreateBrandErrors, CreateBrandParams, CreateBrandResponses } from '../types/brands';
 
-/** Create a brand */
+/**
+ * Create a brand
+ *
+ * A brand, its competitors and its prompts, created in one request. They are written together, so a
+ * request that fails leaves none of them behind, and the prompts are scheduled for execution as
+ * soon as the brand exists.
+ *
+ * Brand ids are chosen by the caller and unique across the instance: an id that is already taken
+ * answers `409`, without saying who holds it. A competitor with no domain other than the brand's
+ * own website is skipped.
+ */
 export function brandsCreate(
   client: Client,
   params: CreateBrandParams,

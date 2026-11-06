@@ -5,7 +5,11 @@ import { getCompetitorDescriptor, getCompetitorFields } from '../resources/compe
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { GetCompetitorErrors, GetCompetitorResponses } from '../types/competitors';
 
-/** Get a competitor */
+/**
+ * Get a competitor
+ *
+ * A competitor outside the key's reach answers `404`, identically to one that does not exist.
+ */
 export function competitorsGet(
   client: Client,
   competitorId: string,

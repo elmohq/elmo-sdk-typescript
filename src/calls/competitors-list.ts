@@ -10,6 +10,9 @@ import type {
   ListCompetitorsParams,
 } from '../types/competitors';
 
+/**
+ * The competitors of the brands this key can reach, newest first. Pass `brandId` for one brand's.
+ */
 export function competitorsList(
   client: Client,
   params?: ListCompetitorsParams,

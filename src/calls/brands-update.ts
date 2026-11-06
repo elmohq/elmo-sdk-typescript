@@ -5,7 +5,12 @@ import { updateBrandDescriptor, updateBrandFields } from '../resources/brands';
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { UpdateBrandErrors, UpdateBrandParams, UpdateBrandResponses } from '../types/brands';
 
-/** Update a brand */
+/**
+ * Update a brand
+ *
+ * Change a brand's name, domains or aliases. A brand outside the key's reach answers `404`,
+ * identically to one that does not exist.
+ */
 export function brandsUpdate(
   client: Client,
   brandId: string,

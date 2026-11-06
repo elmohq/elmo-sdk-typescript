@@ -5,7 +5,11 @@ import { deleteCompetitorDescriptor, deleteCompetitorFields } from '../resources
 import type { RequestOptions } from '../resources/shared/request-options';
 import type { DeleteCompetitorErrors, DeleteCompetitorResponses } from '../types/competitors';
 
-/** Delete a competitor */
+/**
+ * Delete a competitor
+ *
+ * Permanently delete a competitor. The response is the deleted competitor.
+ */
 export function competitorsDelete(
   client: Client,
   competitorId: string,

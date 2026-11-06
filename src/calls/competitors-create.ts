@@ -9,7 +9,12 @@ import type {
   CreateCompetitorResponses,
 } from '../types/competitors';
 
-/** Add a competitor */
+/**
+ * Add a competitor
+ *
+ * A `brandId` outside the key's reach answers `400`, identically to one that does not exist. A
+ * brand tracks at most 500 competitors; adding one past that answers `409`.
+ */
 export function competitorsCreate(
   client: Client,
   params: CreateCompetitorParams,
